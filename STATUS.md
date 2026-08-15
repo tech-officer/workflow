@@ -1,10 +1,10 @@
 ---
 project: techofficer-workflow
 phase: implementation
-updated: 2026-08-13T11:13Z
-lane: null
-state: idle
-current_task: null
+updated: 2026-08-15T19:07Z
+lane: kimi-1
+state: review
+current_task: "B-307 — public threat model + SECURITY.md (TechOfficer M1 item 7)"
 blocker: null
 summary: "M1 complete — P-005 merged (PR #16) closed P-001 (overlay appendix); kit at Contract v2.1; queue empty, no work in flight"
 milestones:
@@ -85,6 +85,25 @@ _(empty)_
   "(12 since PR #3 — rules 4/5 split, CI scar restored)".
 
 ## Activity log
+
+- 2026-08-15T19:07Z — B-307 delivered (TechOfficer brief, branch
+  `brief/B-307`, PR #1): the threat model moves here as its canonical,
+  public home — M1 exit item 7 requires it readable unauthenticated, and
+  this repo is the public surface. Added `docs/threat-model.md`
+  (byte-identical to B-304's approved text except private-repo path
+  references rewritten for strangers; §6.1's write-capable-token
+  disclosure verbatim — relocation diff in the PR body), root
+  `SECURITY.md` carrying the single set of commitments (reporting path,
+  72h acknowledgement, 7-day plan, disclosure posture, supported
+  versions), and a README Security section linking both. Verified
+  pre-merge: unauthenticated `curl` to the branch's raw URLs returns
+  `HTTP/1.1 200 OK` for both files and the §6.1 grep matches. The private
+  control-plane repo keeps only a stub + pointer — its own PR, after
+  this one merges. State → review; founder merges. Note for successors:
+  this clone's local `main` is pre-squash history (unrelated to
+  `origin/main` since the v1.0.0 republication) — branch from
+  `origin/main`, not local `main`. — C (executor session, kimi lane,
+  via B-307)
 
 - 2026-08-13T09:05Z — Pre-publication privacy scrub (founder ruling via
   TechOfficer brief B-301, branch `b-301/publish-v1`): `docs/seeds/` removed

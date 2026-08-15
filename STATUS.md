@@ -1,10 +1,10 @@
 ---
 project: techofficer-workflow
 phase: implementation
-updated: 2026-08-15T19:07Z
-lane: kimi-1
-state: review
-current_task: "B-307 — public threat model + SECURITY.md (TechOfficer M1 item 7)"
+updated: 2026-08-15T19:56Z
+lane: null
+state: idle
+current_task: null
 blocker: null
 summary: "M1 complete — P-005 merged (PR #16) closed P-001 (overlay appendix); kit at Contract v2.1; queue empty, no work in flight"
 milestones:
@@ -85,6 +85,16 @@ _(empty)_
   "(12 since PR #3 — rules 4/5 split, CI scar restored)".
 
 ## Activity log
+
+- 2026-08-15T19:56Z — Rule-13 prune: B-307 merged to main as PR #1
+  (merge commit `77708b4`, verified via `git log origin/main --oneline -3`).
+  Post-merge verification, credential-free:
+  `curl -sI https://raw.githubusercontent.com/tech-officer/workflow/main/docs/threat-model.md`
+  → `HTTP/1.1 200 OK` (same for `main/SECURITY.md`); the §6.1
+  write-capable-token grep matches on the public copy. State → idle,
+  lane/current_task → null. The threat model is now genuinely public —
+  TechOfficer's M1 closes on the control-plane repo's PR #45.
+  — C (executor session, kimi lane, via B-307)
 
 - 2026-08-15T19:07Z — B-307 delivered (TechOfficer brief, branch
   `brief/B-307`, PR #1): the threat model moves here as its canonical,

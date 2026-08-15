@@ -65,6 +65,16 @@ contract across all your projects and routes the next brief to whichever of
 your AI subscriptions is coldest. One workflow, any vendors, one screen.
 (Sister repo, in development.)
 
+## Security
+
+The security posture of the whole TechOfficer system is public on purpose.
+The [threat model](docs/threat-model.md) — canonical home: this repository —
+states precisely what the system holds, what it never holds, and what an
+attacker gets when each component falls, including today's honest exceptions.
+[SECURITY.md](SECURITY.md) carries the vulnerability-reporting path and the
+disclosure commitments. If anything in the product contradicts either
+document, that contradiction is itself a vulnerability — please report it.
+
 ## License
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)

@@ -18,8 +18,11 @@ model: **`docs/plans/04-operating-model.md`** — read it once, then:
   In-progress) before the first commit. **No brief, no code** — out-of-brief
   ideas go to STATUS *Proposals*, not into your diff.
 - **A PR must prove its brief's acceptance checklist** — tick it in the PR
-  body with the verify-command output pasted. PR → CTO review vs brief →
-  {FOUNDER} merges.
+  body with the verify-command output pasted; when an autonomous runner opens
+  the PR (runners use their own PR template), the ticked checklist lands in
+  `docs/reports/<brief-id>/` instead. **A box you could not measure is marked
+  `UNMEASURED` with the reason, never ticked** — an honest gap outranks a
+  ticked guess. PR → CTO review vs brief → {FOUNDER} merges.
 - **When you pick up / finish / get blocked:** update `STATUS.md`
   (In-progress table + a dated Activity-log line). Blocked = say so
   immediately, with a recommendation.
@@ -52,7 +55,17 @@ Then follow the matching boot procedure in `docs/plans/04-operating-model.md`
 At the end of every task, print: (1) a 2–3 sentence summary of what changed;
 (2) the exact commands to verify it works; (3) what error messages would
 indicate failure. If acceptance criteria can't be met, stop and explain —
-don't push a broken implementation. For any PR with visual output, the PR
+don't push a broken implementation.
+
+**Measure the thing, not a proxy for it** (workflow rule 14). A status code,
+an exit code, a line count, a file's existence, a green suite that never
+finished — each is a proxy, and a check that reads a proxy produces confident
+false verdicts. The check that decides a claim must observe the behavior the
+claim is about. An acceptance item you cannot observe from where you run (no
+device, no browser, no production access) is marked **UNMEASURED** with the
+reason — never ticked on a proxy's word, never silently dropped.
+
+For any PR with visual output, the PR
 body also includes side-by-side mock-vs-implementation screenshots at 390px
 width (seed/mock on one side, shipped on the other) plus a measured
 "horizontal overflow = 0px" line; screenshots may live under

@@ -165,7 +165,24 @@ CTO review vs brief (explicit verdict) → the founder merges → board updated.
 13. **Merge closes the loop** ✅ — when a PR merges, the next CTO session on
     that repo removes the delivered item from the queue, sets `state: idle`
     and `lane: null` if unclaimed, and logs the merge as a dated activity
-    line. A STATUS.md claiming merged work is out of contract.
+    line. A STATUS.md claiming merged work is out of contract. **And a drain
+    survives a merge**: when a git conflict pits a removed queue line against
+    a branch that still carries it, the removal wins — resolve STATUS.md by
+    **union of changes** (both sides' removals apply, both sides' additions
+    survive), never union of lines, which resurrects claimed work into the
+    ready queue. (Paid for: a consuming repo's merge resolution chose "keep
+    the queue line" and a claimed, merged brief re-entered the ready queue.)
+14. **Measure the thing, not a proxy for it.** A status code, an exit code, a
+    line count, a file's existence, a green suite that never finished — each
+    is a proxy, and a check that reads a proxy produces confident false
+    verdicts. The check that decides a claim must observe the behavior the
+    claim is about. Two of the ~16 times one deployment paid for this rule:
+    an HTTP 404 from a scope-limited token read as "this repo has no
+    workflow" (it was unreadable, not un-onboarded — cost the founder a
+    day), and `test -r` on a file that did not exist printing the *success*
+    line of a security check — there was nothing to secure. When the real
+    thing cannot be observed from where you run, write **UNMEASURED** with
+    the reason (rule 12's escape hatch) — never substitute the proxy.
 
 ## Briefs 🧪
 

@@ -1,12 +1,12 @@
 ---
 project: techofficer-workflow
 phase: implementation
-updated: 2026-08-15T19:56Z
+updated: 2026-08-27T10:30:00Z
 lane: null
-state: idle
-current_task: null
+state: review
+current_task: "P-006 — harvest: what one month of production paid for (PR open)"
 blocker: null
-summary: "M1 complete — P-005 merged (PR #16) closed P-001 (overlay appendix); kit at Contract v2.1; queue empty, no work in flight"
+summary: "P-006 in review — first experience harvest from TechOfficer M3: rules 13+/14, UNMEASURED, drain durability, scaffold-to-main warning, runner checklist allowance"
 milestones:
   - name: "M0 — bootstrap"
     done: 8
@@ -36,7 +36,9 @@ Brief 008; P-001 resolved by P-005.
 
 ## In progress
 
-_(empty)_
+| Brief | Who | Branch | State |
+|---|---|---|---|
+| P-006 — harvest: what one month of production paid for | TechOfficer CTO session | `brief/P-006` | PR open |
 
 ## Proposals
 
@@ -85,6 +87,18 @@ _(empty)_
   "(12 since PR #3 — rules 4/5 split, CI scar restored)".
 
 ## Activity log
+
+- 2026-08-27T10:30Z — P-006 written, claimed and delivered in one docs PR
+  (branch `brief/P-006`): the first experience harvest. Five lessons from the
+  TechOfficer deployment's M3, each with its production receipt: rule 14
+  (measure the thing, not a proxy — ~16 paid instances), UNMEASURED as a
+  sanctioned checklist verdict, drain-survives-merge (union of changes, not
+  union of lines — INTEGRATION.md queue lifecycle + rule 13), the
+  say-it-to-the-AI-session scaffold-to-main warning in both guides, and the
+  autonomous-runner checklist allowance (docs/reports/<brief-id>/). Never
+  queued: written and claimed by the same session in the same commit, per the
+  founder's standing directive to keep improving the kit from experience.
+  DECISIONS.md records the harvest ritual itself. — TechOfficer CTO session
 
 - 2026-08-15T19:56Z — Rule-13 prune: B-307 merged to main as PR #1
   (merge commit `77708b4`, verified via `git log origin/main --oneline -3`).

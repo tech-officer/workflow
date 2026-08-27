@@ -101,6 +101,14 @@ Lifecycle of a queue item:
   it if still present and logs the merge.
 - **LEAVES at withdrawal** — the CTO session may withdraw a queued item any
   time before claim (brief back to 📝 Draft or 🗄 Superseded).
+- **SURVIVES a merge** — a removal is durable against branches that forked
+  before it. When a git conflict on STATUS.md pits a drained queue line
+  against a branch that still carries it, **the removal wins**: resolve by
+  **union of changes** (both sides' removals apply, and both sides'
+  additions survive), never union of lines. Union of lines resurrects
+  claimed work into the ready queue — measured in a consuming repo, where a
+  merge resolution chose "keep the queue line" and a claimed, already-merged
+  brief re-entered the queue for the next executor to claim again.
 
 A claim strictly **removes** — writers never add a queue item at claim time.
 

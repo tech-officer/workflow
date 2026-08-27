@@ -18,6 +18,21 @@ Entry format (one H2 per decision):
     Accepted risk: <risk consciously taken>   (optional)
     Who: founder (+CTO session)
 
+## 2026-08-27 — Lessons flow back into the kit at milestone close-out
+Decision: each consuming project's milestone close-out reviews what production
+paid for and files a kit brief for anything rule-shaped; the kit is a living
+document, not a snapshot (founder: "we should be always improving workflow
+repo based on the experience we are getting"). P-006 is the first harvest —
+five lessons from TechOfficer's M3 (~28 briefs, ~11 unplanned defects).
+Rejected: letting each deployment keep its lessons in its own DECISIONS.md —
+every new install inherits the kit as written, not as learned; the same
+defects get paid for again.
+Rejected: continuous trickle (a kit PR per lesson) — too much merge traffic
+for a founder who is the single merge point; close-out batches it.
+Accepted risk: lessons arrive late by up to one milestone; a consuming
+project can still file an urgent kit brief out of band.
+Who: founder (2026-08-25 directive) + TechOfficer CTO session.
+
 ## 2026-08-05 — Founder is the single merge point (no delegation path)
 Decision: the founder remains the only merge authority; no delegation or
 timeout/auto-merge path is added to the method.

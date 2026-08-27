@@ -40,7 +40,12 @@ procedures.
 At the end of every task, print: (1) a 2–3 sentence summary of what changed;
 (2) the exact commands to verify it works; (3) what error messages would
 indicate failure. If acceptance criteria can't be met, stop and explain —
-don't push a broken implementation. This is a docs-only repo: "verify" means
+don't push a broken implementation. **Measure the thing, not a proxy for it**
+(workflow rule 14): the check that decides a claim must observe the behavior
+the claim is about — a status code, an exit code, a line count, a file's
+existence are proxies and produce confident false verdicts. An item you
+cannot observe from where you run is marked **UNMEASURED** with the reason,
+never ticked. This is a docs-only repo: "verify" means
 the greps, parses, and installer dry-runs the brief names, quoted in the PR.
 For any PR with visual output, the PR body also includes side-by-side
 mock-vs-implementation screenshots at 390px width plus a measured

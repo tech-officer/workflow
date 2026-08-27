@@ -22,6 +22,11 @@ files in your repo can play any role.
    into place and find-replace the placeholders yourself.)
 3. Commit directly to main this once ("chore: TechOfficer workflow
    scaffold") — the last direct push to main you'll ever make.
+   ⚠️ **If an AI session runs the installer for you, say "commit the
+   scaffold directly to main" in so many words.** Its default is
+   branch → PR, and until that PR merges, every tool that reads
+   `STATUS.md` from the default branch reports the repo as **not
+   onboarded** — the scaffold exists and nothing can see it.
 
 ## Step 2 — Boot the CTO session (5 min, you)
 

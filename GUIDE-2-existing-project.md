@@ -21,7 +21,11 @@ step 1 has the details). Retrofit notes:
   and run an overlay instead — the whole process layer lives in a separate
   private repo: `docs/appendix/overlays.md` (🧪 unproven).
 
-Commit the scaffold to main directly this once.
+Commit the scaffold to main directly this once. ⚠️ **If an AI session runs
+the installer for you, say "commit the scaffold directly to main" in so many
+words** — its default is branch → PR, and until that PR merges, every tool
+that reads `STATUS.md` from the default branch reports the repo as **not
+onboarded**: the scaffold exists and nothing can see it.
 
 ## Step 2 — Boot the CTO session with the EXISTING PROJECT variant
 

@@ -1,12 +1,12 @@
 ---
 project: techofficer-workflow
 phase: implementation
-updated: 2026-08-27T10:30:00Z
+updated: 2026-08-27T12:40:00Z
 lane: null
-state: review
-current_task: "P-006 — harvest: what one month of production paid for (PR open)"
+state: idle
+current_task: null
 blocker: null
-summary: "P-006 in review — first experience harvest from TechOfficer M3: rules 13+/14, UNMEASURED, drain durability, scaffold-to-main warning, runner checklist allowance"
+summary: "P-006 merged (PR #3) — first experience harvest in effect: rule 14 (measure, don't proxy), UNMEASURED, drain durability, scaffold-to-main warning, runner checklist allowance"
 milestones:
   - name: "M0 — bootstrap"
     done: 8
@@ -36,9 +36,7 @@ Brief 008; P-001 resolved by P-005.
 
 ## In progress
 
-| Brief | Who | Branch | State |
-|---|---|---|---|
-| P-006 — harvest: what one month of production paid for | TechOfficer CTO session | `brief/P-006` | PR open |
+_(empty)_
 
 ## Proposals
 
@@ -87,6 +85,15 @@ Brief 008; P-001 resolved by P-005.
   "(12 since PR #3 — rules 4/5 split, CI scar restored)".
 
 ## Activity log
+
+- 2026-08-27T12:40Z — Rule-13 prune: P-006 merged to main as PR #3 (merge
+  commit `34580e9`, verified via `git log origin/main --oneline -1`). The
+  first experience harvest is in effect for every future install: rule 14,
+  UNMEASURED, drain-survives-merge, the scaffold-to-main warning, the runner
+  checklist allowance. State → idle, current_task → null. And rule 13's own
+  new clause got its first exercise the same day it merged: this prune is
+  the removal that must survive any branch that forked before it.
+  — TechOfficer CTO session
 
 - 2026-08-27T10:30Z — P-006 written, claimed and delivered in one docs PR
   (branch `brief/P-006`): the first experience harvest. Five lessons from the

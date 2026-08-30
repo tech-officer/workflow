@@ -23,7 +23,11 @@ as the experience says it should be.
 
 **L1 — Measure the thing, not a proxy for it.** The consuming project hit this
 ~16 times, three in one week: an HTTP `res.ok` read as "this repo has no
-workflow" (a fine-grained token's 404 — cost a day); `test -r` on a file that
+workflow" (a 404 — cost a day; and the cause first recorded for that 404, "a
+fine-grained token cannot see another owner", was itself an unmeasured guess:
+the token was later measured to be **classic**, which is not owner-bounded, so
+the explanation was withdrawn 2026-08-29 and the cause is open. The rule caught
+its own example.); `test -r` on a file that
 did not exist printing `SECRET-ISOLATION-OK` (a security check passing because
 there was nothing to secure); a `| head -1` status line read as "the site is
 up" on a hostname that once answered 302 with no service behind it. The kit

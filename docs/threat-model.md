@@ -1,6 +1,9 @@
 # TechOfficer — Threat Model
 
-_Status: v1, 2026-08-14 · Owner: Mansoor (founder) · Written to be audited._
+_Status: v1, 2026-08-14 · **corrected 2026-08-29** (§2, §6.1, §6.2, §8.2 —
+the v1 console's sync credential was described as a fine-grained, read-only
+PAT and was measured to be a **classic** PAT; see §6.1) · Owner: Mansoor
+(founder) · Written to be audited._
 
 This document says, precisely, what TechOfficer holds, what it never holds,
 and what an attacker gets when each component falls. It is written for a
@@ -43,7 +46,7 @@ stated.
 | Asset | Where it lives | Crosses which boundary |
 |---|---|---|
 | User source code | The user's GitHub repos; checked out on the user's VPS | GitHub ↔ user VPS only. **Never** reaches the control plane. |
-| GitHub tokens | The user's VPS only: a fine-grained PAT, mode `0600`, readable only by the dedicated `agent` OS user, scoped to Contents + Pull requests (the VPS setup runbook, §7). The v1 console additionally holds its own tokens — see §6.1. | None, in the v3 design. Never transmitted to the control plane. |
+| GitHub tokens | The user's VPS only: a PAT in a file mode `0600`, readable only by the dedicated `agent` OS user. The runbook provisions a **fine-grained** PAT scoped to Contents + Pull requests (the VPS setup runbook, §7); a **classic** PAT dropped into the same place is a different object — its reach is whatever scopes were ticked at creation, and `repo` is read *and* write on every repository the account can reach. **Which one is present is a fact about the box, not about this document** (§6.1). The v1 console additionally holds its own tokens — see §6.1. | None, in the v3 design. Never transmitted to the control plane. |
 | AI subscription credentials | The user's VPS only, in the `agent` user's home (`~/.claude`, `~/.kimi`, `~/.gemini`, `~/.codex`), written there by the user logging in themselves | None. We detect login state; we never see, move, or refresh these. |
 | Fleet metadata | Control-plane database: project names, repo URLs, job statuses, lane state, sync snapshots (the control plane's `db/schema.ts`) | User VPS → control plane (orchestrator reports); control plane → phone (display) |
 | Job logs | The user's VPS (full); the control plane receives redacted log events | User VPS → control plane, after redaction (§5) |
@@ -230,10 +233,32 @@ this document would be marketing if it pretended otherwise:
   session, held in the server-side JWT session cookie; there is exactly one
   allowed user (single-user lock; everyone else gets a bare 404 —
   the control plane's auth module).
-- Two PATs in environment variables on the hosting platform: a read-only
-  sync token (private-repo metadata sync) and a fine-grained write token
+- Up to two PATs in environment variables on the console's host: a sync
+  token (private-repo metadata sync) and, when configured, a write token
   (Contents read+write on the founder's repos) powering founder notes
   (the console's `.env.example`).
+
+  ⚠️ **Corrected 2026-08-29.** Until this date these two lines called the
+  sync token "read-only" and the write token "fine-grained". **The read-only
+  claim was never measured, and it was wrong**: the sync token on the
+  founder's box was a **classic** PAT (`ghp_`), whose `repo` scope is read
+  *and* write on every repository the account can reach — private and
+  organisation repositories included — not the single-repo, Contents-read
+  grant this document described. It was described that way in five places
+  across two repositories, for months, because nothing ever asked the box.
+
+  What changed as a result: the console now determines each configured
+  token's **class** — `classic`, `fine-grained` or `unrecognised`, from the
+  fixed prefix and nothing else — and reports it beside the owner it covers
+  and once at startup. It **reports and does not enforce**: refusing to boot
+  on a classic token would take a console down for anyone whose only working
+  credential is one. The founder's box migrates to a fine-grained sync token
+  and revokes the classic one; **this paragraph stands regardless**, because
+  the exposure it names already happened and a threat model that quietly
+  edits its own history is not one.
+
+  **The general claim this replaces:** *a document describing a credential is
+  not a measurement of it.* Read the class off the box.
 - Supabase Postgres with fleet metadata (same shape as the v3 table).
 
 A breach of today's console therefore yields a write-capable GitHub token
@@ -247,8 +272,12 @@ single-user lock, the 404 posture, and token scoping — not eliminated.
 **Attacker gets:** everything the `agent` OS user can reach — the checked-out
 source of projects on that box, the CLI login state in `~/.claude` /
 `~/.kimi` / `~/.gemini` / `~/.codex` (i.e. use of the user's AI
-subscriptions), the fine-grained GitHub PAT (Contents + Pull requests on
-the repos the user scoped it to), and the local job queue/logs.
+subscriptions), the GitHub PAT on that box, and the local job queue/logs.
+**How far that PAT reaches is a property of the credential, not of this
+document** (2026-08-29): fine-grained and scoped as the runbook asks, it is
+Contents + Pull requests on the repos the user scoped it to; classic, it is
+whatever was ticked, and `repo` is read and write on every repository the
+account can reach.
 
 **Attacker does not get:** sudo (the agent user has none — the VPS setup runbook,
 §6), deployment artifacts (owned by a different user), the control plane's
@@ -335,8 +364,12 @@ against the ledger:
 2. **The orchestrator holds a GitHub token with write scope on the user's
    box** (runbook §7). Contents + Pull requests is more than
    read-only; a VPS compromise turns it into write access to the scoped
-   repos (§6.2). Scoped fine-grained, one box, one user — but write is
-   write, and we say so.
+   repos (§6.2). One box, one user — but write is write, and we say so.
+   **Amended 2026-08-29:** this used to read "scoped fine-grained" as though
+   that were guaranteed. It is what the runbook asks for; it is not what the
+   file necessarily contains, and on the founder's own box it was not
+   (§6.1). The scoping is a property to be *measured* per box — a classic
+   PAT in the same place is read+write across the whole account.
 3. **We depend on four vendors' CLI binaries** (2026-08-11), including
    their headless modes and their own permission systems. A vendor can
    break us; none can custody us.

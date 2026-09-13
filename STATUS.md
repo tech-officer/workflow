@@ -1,12 +1,12 @@
 ---
 project: techofficer-workflow
 phase: implementation
-updated: 2026-08-27T12:40:00Z
-lane: null
-state: idle
-current_task: null
+updated: 2026-09-13T09:05:00Z
+lane: claude-1
+state: working
+current_task: "P-007 — Contract v2.2: docs/queue/ specified, readers accept both"
 blocker: null
-summary: "P-006 merged (PR #3) — first experience harvest in effect: rule 14 (measure, don't proxy), UNMEASURED, drain durability, scaffold-to-main warning, runner checklist allowance"
+summary: "P-007 in review — Contract v2.2 specifies docs/queue/ (one file per item) and requires readers to accept both; producers unchanged, so every v2.1 repo stays valid untouched"
 milestones:
   - name: "M0 — bootstrap"
     done: 8
@@ -36,7 +36,20 @@ Brief 008; P-001 resolved by P-005.
 
 ## In progress
 
-_(empty)_
+- **P-007 — Contract v2.2: `docs/queue/` specified, readers accept both.**
+  Claimed 2026-09-13, lane `claude-1`, branch `brief/P-007`.
+  Cause, measured in a consuming repo: v2.1's *"removal wins, never union of
+  lines"* rule is correct but only tells a human how to resolve a conflict —
+  it cannot prevent one, and every pair of concurrent claims produces one.
+  `merge=union` was then tried on two real branches and **restored both
+  drained lines**, inverting the rule rather than implementing it
+  (`tech-officer/TechOfficer` B-432, 2026-09-11). Two branches deleting two
+  different paths merge silently; one file per queue item is the fix.
+  **Reader half only.** Producers keep writing the front-matter `queue`, so
+  no template, prompt, installer or example changed and every v2.1 repo is a
+  valid v2.2 repo untouched. Producers move in v2.3, gated on readers having
+  adopted v2.2 — shipping both at once would hand every console an empty
+  queue on day one.
 
 ## Proposals
 

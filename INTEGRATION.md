@@ -1,6 +1,6 @@
 # INTEGRATION.md — the machine-readable contract
 
-> **Contract v2.1** · Status: active · First reader: the TechOfficer console
+> **Contract v2.2** · Status: active · First reader: the TechOfficer console
 >
 > This document is the single source of truth for how tools read and write
 > workflow state. If a tool and this document disagree, the document wins and
@@ -111,6 +111,86 @@ Lifecycle of a queue item:
   brief re-entered the queue for the next executor to claim again.
 
 A claim strictly **removes** — writers never add a queue item at claim time.
+
+### The ready queue as files — `docs/queue/` (v2.2)
+
+**READERS ONLY IN v2.2. Producers do not write this form yet** — see *Migration*
+below before implementing anything.
+
+A repo may carry its ready queue as **one file per claimable item**:
+
+```
+docs/queue/B-014.md
+docs/queue/B-015.md
+```
+
+Each file is YAML front matter carrying **exactly the four queue-item keys** of
+the schema above — `id`, `title`, `role`, `weight` — optionally followed by
+prose:
+
+```markdown
+---
+id: B-014
+title: "Password reset"
+role: executor-backend
+weight: M
+---
+
+Anything below the front matter is commentary for humans and carries no
+machine meaning, exactly as in STATUS.md.
+```
+
+The item schema is **unchanged**: same four keys, same types, same rule 4
+enforcement. Only its location moves. A file whose front matter violates the
+item schema is an invalid item (→ rule 3 applies to that item's repo).
+
+**Why this form exists.** Git cannot express *"both sides deleted different
+lines of one list"*, so two concurrent claims against the front-matter `queue`
+conflict, every time, and a human resolves them under the v2.1 rule above.
+That rule is correct and insufficient: it tells a person how to resolve a
+conflict, it does not prevent one. Two branches deleting two different **paths**
+merge silently and always have.
+
+**And there is no configuration fix — that was measured, not assumed.** A
+consuming repo set `STATUS.md merge=union` to remove the conflict and tested it
+on two real branches: the merge went clean and **both drained lines came back**,
+re-queueing claimed, already-merged work. `merge=union` keeps both sides of a
+hunk, so each side restores the line the other deleted — it does not implement
+the v2.1 rule, it **inverts** it, trading a loud conflict for a silent
+regression. Do not configure it. (`tech-officer/TechOfficer`, B-432,
+2026-09-11.)
+
+#### Precedence — a reader must not guess
+
+1. If `docs/queue/` exists **and contains at least one valid item file**, it is
+   THE ready queue. The front-matter `queue` is then **commentary** — the same
+   status a prose "Ready to pick up" table has — and is ignored.
+2. Otherwise the front-matter `queue` is THE ready queue, exactly as in v2.1.
+3. An **empty or absent** `docs/queue/` is **not an empty queue.** It means the
+   repo does not use the directory form, and the reader falls through to case
+   2. A migrated repo with nothing queued still carries `queue: []` in its
+   front matter, which reads as empty under case 2.
+
+Case 3 is the one an implementation gets wrong. Without it, an accidental
+`mkdir docs/queue` silently empties a project's board.
+
+The lifecycle is unchanged — enter on CTO queue, leave at claim, at rule-13
+prune, or at withdrawal — and **a claim strictly removes**: in this form, by
+deleting the item's file in the claim commit.
+
+#### Migration — two revisions, in this order
+
+| revision | producers | readers |
+|---|---|---|
+| **v2.2** (this one) | keep writing front-matter `queue` | **MUST** accept both forms, per the precedence above |
+| **v2.3** (not yet specified) | write `docs/queue/`; front-matter `queue` becomes legacy | accept both, unchanged |
+
+**The halves cannot be swapped.** A producer writing the new form before
+readers accept it hands every console an empty queue, and the failure looks
+like a broken install rather than an un-adopted contract. **v2.2 therefore
+changes no file's shape:** every v2.1 repo is a valid v2.2 repo, untouched, on
+the day this ships. Readers are what must move first, and v2.3 is gated on them
+having moved.
 
 ### Canonical id mapping (v2.1)
 
@@ -303,6 +383,24 @@ write it per the advisory-persist rule (WORKFLOW.md §The roles).
 ---
 
 ## Changelog
+
+- **v2.2** (2026-09-13, P-007) — **Additive, reader-only, and non-breaking by
+  construction.** Specifies `docs/queue/` — one file per claimable item, the
+  same four-key item schema — as an alternative location for THE ready queue,
+  with three-case precedence (directory with at least one valid item wins;
+  otherwise front matter; an empty or absent directory is **not** an empty
+  queue and falls through). **Producers do not write the new form in v2.2** and
+  no template, prompt, installer or example changed: every v2.1 repo is a valid
+  v2.2 repo untouched. Cause, measured: the v2.1 "removal wins / never union of
+  lines" rule tells a human how to resolve a conflict but cannot prevent one,
+  and `merge=union` — tried on two real branches in a consuming repo — restored
+  **both** drained lines, inverting the rule rather than implementing it
+  (`tech-officer/TechOfficer`, B-432, 2026-09-11). Two branches deleting two
+  different paths merge silently. **Unchanged:** all v1/v2/v2.1 keys, the queue
+  item schema, the queue lifecycle and claim-removes semantics, the v2.1
+  conflict-resolution rule (still normative for every repo on the front-matter
+  form), the FOUNDER.md format, and the tool write-rules. **Deferred to v2.3:**
+  producers writing `docs/queue/`, gated on readers having adopted v2.2.
 
 - **v2.1** (2026-08-05, P-004 — gap fixes 3/4/5/10/16/21 from the 2026-08-05
   methods analysis) — one line per slice:

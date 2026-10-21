@@ -53,6 +53,8 @@ class ReleaseTests(unittest.TestCase):
             values={**VALUES,'founder':founder};dest=self.base/f'adopter{len(founder)}';dest.mkdir(exist_ok=True)
             result=install(self.source,dest,values);self.assertEqual(result.returncode,0,result.stderr)
             _,_,rendered=self.candidate(values)
+            expected=exporter.inputs(values)['{FOUNDER_INITIAL}']
+            self.assertIn('Owners: **'+expected+'** = '+founder,(dest/'STATUS.md').read_text())
             for name,(data,_) in rendered.items():self.assertEqual((dest/name).read_bytes(),data)
     def test_invalid_values_and_calendar(self):
         for key,value in [('project','a\\b'),('project','a"b'),('founder','{PROJECT}'),('domain','line\nbreak'),('domain','a\x01b'),('weekday','a'*501),('renderTime','2026-02-29T12:00:00Z'),('renderTime','2026-10-21T24:00:00Z'),('renderTime','2026-10-21T12:00:00+00:00')]:
@@ -75,10 +77,21 @@ class ReleaseTests(unittest.TestCase):
         with self.assertRaises(exporter.Refused):exporter.write(link/'out',self.source,manifest,meta,rendered)
         with self.assertRaises(exporter.Refused):exporter.candidate(self.source,'HEAD',VALUES,'candidate')
         original=(self.source/'managed-files.tsv').read_text()
-        for line in ['templates/STATUS.md|../outside|managed|file','templates/STATUS.md|STATUS.md|managed|file','templates/STATUS.md|docs/OPS/boot-prompts.md|managed|file','templates/STATUS.md|docs|managed|file']:
+        for line in ['templates/STATUS.md|../outside|managed|file','templates/STATUS.md|STATUS.md|managed|file','templates/STATUS.md|docs/OPS/boot-prompts.md|managed|file','templates/STATUS.md|docs|managed|file','templates/STATUS.md|status.md|managed|file','templates/STATUS.md|nested/AGENTS.md|managed|file','templates/STATUS.md|CODEX.md|managed|file','.env.local|safe.md|managed|file']:
             (self.source/'managed-files.tsv').write_text(original+'\n'+line+'\n');self.rev=commit(self.source)
             with self.assertRaises(exporter.Refused):self.candidate()
         self.assertEqual(list(self.adopter.iterdir()),[])
+    def test_cli_malformed_inputs_and_rendered_aggregate(self):
+        for payload in ['{"project":1,"project":2}', '{}', 'x'*8193]:
+            p=self.base/'bad.json';p.write_text(payload)
+            result=subprocess.run([sys.executable,str(ROOT/'tools/release/export.py'),'--source',str(self.source),'--commit',self.rev,'--inputs',str(p),'--label','test','--output',str(self.base/'bad-out')],capture_output=True)
+            self.assertEqual(result.returncode,2);self.assertFalse((self.base/'bad-out').exists())
+        mapping=[]
+        for i in range(9):
+            (self.source/f'templates/expand{i}.md').write_text('{DOMAIN}'*500)
+            mapping.append(f'templates/expand{i}.md|docs/expand{i}.md|managed|file')
+        (self.source/'managed-files.tsv').write_text('\n'.join(mapping)+'\n');self.rev=commit(self.source)
+        with self.assertRaises(exporter.Refused):self.candidate({**VALUES,'domain':'x'*500})
     def test_nonregular_and_oversized_sources(self):
         target=self.source/'templates/boot-prompts.md';target.unlink();target.symlink_to('/etc/passwd');self.rev=commit(self.source)
         with self.assertRaises(exporter.Refused):self.candidate()

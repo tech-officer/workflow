@@ -97,7 +97,7 @@ def main():
     for flag in ['source','commit','inputs','label','output']:parser.add_argument('--'+flag,required=True)
     args=parser.parse_args()
     try:
-        p=Path(args.inputs);need(p.is_file() and not p.is_symlink() and p.stat().st_size<=8192,'invalid input file')
+        p=Path(args.inputs);need(p.is_file() and not any(part.is_symlink() for part in [p.absolute(),*p.absolute().parents]) and p.stat().st_size<=8192,'invalid input file')
         def unique(pairs):
             result={}
             for k,v in pairs:need(k not in result,'duplicate input field');result[k]=v

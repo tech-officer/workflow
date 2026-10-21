@@ -1,12 +1,12 @@
 ---
 project: techofficer-workflow
 phase: implementation
-updated: 2026-10-21T11:39:07.436036+00:00
-lane: executor-1
+updated: "2026-10-21T13:29:43.740110+00:00"
+lane: null
 state: review
-current_task: "P-008 PR7 built and CTO-approved; founder review/merge pending, no publication or rollout"
+current_task: "P-009 release closeout records: v1.1.0 published; founder review pending"
 blocker: null
-summary: "Contract2.2 reader specification merged; P008 prepares reproducible release/export and migration evidence. No published upgrade or adopter rollout yet."
+summary: "Workflow v1.1.0 published from merged P-008/db6d106; Contract2.2 unchanged. Adopters retain reviewed subset manifests; application acceptance remains separate."
 milestones:
   - name: "M0 — bootstrap"
     done: 8
@@ -36,7 +36,7 @@ Brief 008; P-001 resolved by P-005.
 
 ## In progress
 
-- **P-008 — Reproducible release candidate**: [PR7](https://github.com/tech-officer/workflow/pull/7), dedicated executor, `brief/P-008`, feature45d3268. Eight real installer/export tests + production B511 integration + readers36/40 PASS; CTO scoped approval recorded. Founder review/merge pending. No publication/adopter writes.
+- **P-009 — Release closeout records**: CTO documentation work on `brief/P-009`, claimed before first commit; release verified, independent records review and founder merge pending.
 
 ## Proposals
 
@@ -85,6 +85,8 @@ Brief 008; P-001 resolved by P-005.
   "(12 since PR #3 — rules 4/5 split, CI scar restored)".
 
 ## Activity log
+
+- 2026-10-21 — CTO claimed P-009 documentation closeout under founder instruction to finish workflow rollout. P-008/PR7 is merged at db6d106. Published v1.1.0 at that exact commit; verified public release and tag. Eight installer/export tests, Bash syntax and actual B511 consumer integration PASS. No CI added, no Contract2.3 or runtime acceptance claimed. See docs/releases/v1.1.0.md.
 
 - 2026-10-21 — P008 delivered in PR7: deterministic candidate/manifest, shared mapping/boot template, protected records and actual installer parity. Eight focused tests, production B511 roundtrip/unknown-baseline integration, reader36+40, syntax/diff checks PASS; CTO independently approved45d3268. No newCI, release/tag, adopter or live-operation change. Full evidence docs/reports/P-008; successor handoff001.
 

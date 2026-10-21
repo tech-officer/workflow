@@ -93,3 +93,7 @@ Further reading: [WORKFLOW.md](WORKFLOW.md) (the method) ·
 ## Reviewable upgrade candidates
 
 The optional [offline candidate exporter](docs/releases/upgrade-candidates.md) produces pinned rendered documentation, a B511-compatible managed-subset manifest, protected-file inventory and migration/rollback guidance. Ordinary Bash installation remains available without Python; `--render-time` makes its rendering reproducible. Candidates are not published releases or proof of historical installation. Existing records and custom instructions require explicit review. See [P008 evidence](docs/reports/P-008/README.md) and [current handoff](docs/handoff/001-release-candidate-preparation.md).
+
+## Versioned workflow upgrades
+
+[Workflow v1.1.0](https://github.com/tech-officer/workflow/releases/tag/v1.1.0) publishes reproducible exports and safe per-project upgrade evidence. Read the [release and migration notes](docs/releases/v1.1.0.md). Existing customized projects adopt a reviewed managed subset; do not force-install over their records. Contract version remains 2.2.

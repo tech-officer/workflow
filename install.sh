@@ -30,6 +30,7 @@
 #   --domain TEXT      product area            (fills {DOMAIN})
 #   --dev-url URL      dev environment URL     (fills {DEV_URL}; empty = "—")
 #   --weekday DAY      bi-weekly report day    (fills {WEEKDAY}; default Monday)
+#   --render-time UTC   explicit YYYY-MM-DDTHH:MM:SSZ for reproducible installs
 #   --overwrite MODE   ask (default) | skip | force   — for existing files
 #   -h | --help        this text
 
@@ -47,7 +48,7 @@ TPL="$KIT_DIR/templates"
 [ -d "$TPL" ] || die "templates/ not found next to install.sh ($TPL). Run the script from a full copy of the kit."
 
 # --- parse args --------------------------------------------------------------
-TARGET="" PROJECT="" FOUNDER="" DOMAIN="" DEV_URL="" WEEKDAY="" OVERWRITE="ask"
+TARGET="" PROJECT="" FOUNDER="" DOMAIN="" DEV_URL="" WEEKDAY="" OVERWRITE="ask" RENDER_TIME=""
 DEV_URL_SET=0
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -56,6 +57,7 @@ while [ $# -gt 0 ]; do
     --domain)    DOMAIN="${2:-}"; shift 2 ;;
     --dev-url)   DEV_URL="${2:-}"; DEV_URL_SET=1; shift 2 ;;
     --weekday)   WEEKDAY="${2:-}"; shift 2 ;;
+    --render-time) RENDER_TIME="${2:-}"; shift 2 ;;
     --overwrite) OVERWRITE="${2:-}"; shift 2 ;;
     -h|--help)   usage; exit 0 ;;
     -*)          die "unknown flag: $1 (see --help)" ;;
@@ -94,9 +96,24 @@ if [ "$DEV_URL_SET" -eq 0 ] && [ -z "$DEV_URL" ]; then
 fi
 [ -z "$DEV_URL" ] && DEV_URL="—"
 ask WEEKDAY "Bi-weekly report weekday" "Monday"
-FOUNDER_INITIAL=$(printf '%s' "$FOUNDER" | cut -c1 | tr '[:lower:]' '[:upper:]')
-DATE=$(date +%Y-%m-%d)
-NOW=$(date -u +%Y-%m-%dT%H:%M:%SZ)   # fills {ISO-8601-WITH-TIMEZONE} (STATUS.md front matter)
+# Reject values that would be interpreted by later render passes or break records.
+for value in "$PROJECT" "$FOUNDER" "$DOMAIN" "$DEV_URL" "$WEEKDAY"; do
+  [ "${#value}" -le 500 ] || die "render value exceeds 500 characters"
+  [[ "$value" != *$'\n'* ]] || die "newline in render value"
+  [[ "$value" != *'{'* && "$value" != *'}'* ]] || die "ambiguous render token in value"
+  if printf '%s' "$value" | LC_ALL=C grep -q '[[:cntrl:]]'; then die "control character in render value"; fi
+done
+[[ "$PROJECT" != *'"'* && "$PROJECT" != *'\'* ]] || die "project cannot contain quote or backslash"
+FOUNDER_INITIAL=$(printf '%s' "${FOUNDER:0:1}" | tr '[:lower:]' '[:upper:]')
+NOW="${RENDER_TIME:-$(date -u +%Y-%m-%dT%H:%M:%SZ)}"
+[[ "$NOW" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$ ]] || die "invalid render time"
+year=$((10#${NOW:0:4})); month=$((10#${NOW:5:2})); day=$((10#${NOW:8:2}))
+hour=$((10#${NOW:11:2})); minute=$((10#${NOW:14:2})); second=$((10#${NOW:17:2}))
+[ "$year" -ge 1 ] && [ "$month" -ge 1 ] && [ "$month" -le 12 ] && [ "$hour" -lt 24 ] && [ "$minute" -lt 60 ] && [ "$second" -lt 60 ] || die "invalid render time"
+days=31
+case "$month" in 4|6|9|11) days=30 ;; 2) days=28; if (( year % 4 == 0 && (year % 100 != 0 || year % 400 == 0) )); then days=29; fi ;; esac
+[ "$day" -ge 1 ] && [ "$day" -le "$days" ] || die "invalid render time"
+DATE="${NOW%%T*}"
 
 # --- rendering ----------------------------------------------------------------
 esc() { printf '%s' "$1" | sed -e 's/[\\&]/\\&/g'; }
@@ -116,6 +133,18 @@ WROTE=() SKIPPED=() UNCHANGED=()
 TMP=$(mktemp)
 trap 'rm -f "$TMP"' EXIT
 
+check_destination() {
+  local rel="$1" part current="$TARGET"
+  [[ "$rel" =~ ^[A-Za-z0-9_.-]+(/[A-Za-z0-9_.-]+)*$ ]] || die "unsafe destination"
+  local oldifs="$IFS"; IFS='/'; read -r -a parts <<< "$rel"; IFS="$oldifs"
+  for part in "${parts[@]}"; do
+    [[ "$part" != '.' && "$part" != '..' && "$part" != '.git' ]] || die "unsafe destination"
+    current="$current/$part"
+    [ ! -L "$current" ] || die "symlink destination refused"
+  done
+  [ ! -e "$current" ] || [ -f "$current" ] || die "nonregular destination refused"
+}
+
 confirm_overwrite() { # confirm_overwrite <relative-path> -> 0 write, 1 skip
   case "$OVERWRITE" in
     force) return 0 ;;
@@ -127,7 +156,7 @@ confirm_overwrite() { # confirm_overwrite <relative-path> -> 0 write, 1 skip
 }
 
 install_file() { # install_file <template-file> <relative-dest>
-  local src="$TPL/$1" rel="$2" dst="$TARGET/$2"
+  local src="$KIT_DIR/$1" rel="$2" dst="$TARGET/$2"
   render < "$src" > "$TMP"
   if [ -e "$dst" ]; then
     if cmp -s "$TMP" "$dst"; then UNCHANGED+=("$rel"); return; fi
@@ -135,6 +164,7 @@ install_file() { # install_file <template-file> <relative-dest>
   fi
   mkdir -p "$(dirname "$dst")"
   cp "$TMP" "$dst"
+  chmod 644 "$dst"
   WROTE+=("$rel")
 }
 
@@ -155,6 +185,7 @@ install_agents_md() {
     WROTE+=("$rel (protocol block appended)")
   else
     cp "$TMP" "$dst"
+  chmod 644 "$dst"
     WROTE+=("$rel")
   fi
 }
@@ -166,74 +197,8 @@ install_adapter() { # install_adapter <template-file> <relative-dest>
   local rel="$2" dst="$TARGET/$2"
   if [ -e "$dst" ]; then SKIPPED+=("$rel (exists — adapters are never overwritten)"); return; fi
   mkdir -p "$(dirname "$dst")"
-  render < "$TPL/$1" > "$dst"
-  WROTE+=("$rel")
-}
-
-# boot-prompts.md is generated, not a template.
-install_boot_prompts() {
-  cat > "$TMP" <<EOF
-# Boot prompts — $PROJECT (generated by the TechOfficer workflow installer)
-
-> Copy-paste blocks. Every prompt uses the same vendor-neutral read order:
-> **AGENTS.md → STATUS.md → FOUNDER.md → your brief** (in \`docs/briefs/\`).
-> The prompt says who you are; the repo files are the job. Operating
-> procedures live in \`docs/plans/04-operating-model.md\`.
-
-## CTO session — new project (no roadmap yet)
-
-\`\`\`
-You are the CTO session for $PROJECT. I am $FOUNDER (founder). Read, in
-order: AGENTS.md → STATUS.md → FOUNDER.md — then follow the "CTO boot — new
-project" procedure in docs/plans/04-operating-model.md. You write NO feature
-code. Start the interview now.
-\`\`\`
-
-## CTO session — existing project (repo has real history)
-
-\`\`\`
-You are the CTO session for $PROJECT. I am $FOUNDER (founder). Read, in
-order: AGENTS.md → STATUS.md → FOUNDER.md — then follow the "CTO boot —
-existing project" procedure in docs/plans/04-operating-model.md. You write
-NO feature code. Start the audit now.
-\`\`\`
-
-## CTO or executor — successor session (a handoff exists)
-
-\`\`\`
-You are the {ROLE} session for $PROJECT. I am $FOUNDER (founder). Your
-predecessor left a handoff: read the highest-numbered file in docs/handoff/,
-then AGENTS.md → STATUS.md → FOUNDER.md, and follow the "CTO boot —
-successor session" procedure in docs/plans/04-operating-model.md. Prove
-you're oriented before touching the queue.
-\`\`\`
-
-## Executor session (one per brief)
-
-\`\`\`
-You are an executor session for $PROJECT, assigned brief {BRIEF_ID}. Read,
-in order: AGENTS.md → STATUS.md → FOUNDER.md → your brief's FULL text in
-docs/briefs/. I am $FOUNDER (founder). Follow the "Executor boot" procedure
-in docs/plans/04-operating-model.md: claim in STATUS.md first, one branch,
-one PR that proves the acceptance checklist. Start with the claim now.
-\`\`\`
-
-## Ask the dying session for a handoff
-
-\`\`\`
-Your context is nearly full. Write docs/handoff/NNN-<era>.md (next number,
-structure per 000-TEMPLATE.md), including anything we discussed that is NOT
-yet written elsewhere in the repo. Commit on your branch and open a PR —
-write for a reader with zero chat history.
-\`\`\`
-EOF
-  local rel="docs/ops/boot-prompts.md" dst="$TARGET/docs/ops/boot-prompts.md"
-  if [ -e "$dst" ]; then
-    if cmp -s "$TMP" "$dst"; then UNCHANGED+=("$rel"); return; fi
-    confirm_overwrite "$rel" || { SKIPPED+=("$rel"); return; }
-  fi
-  mkdir -p "$(dirname "$dst")"
-  cp "$TMP" "$dst"
+  render < "$KIT_DIR/$1" > "$dst"
+  chmod 644 "$dst"
   WROTE+=("$rel")
 }
 
@@ -242,21 +207,23 @@ printf '\nInstalling the TechOfficer workflow into %s\n' "$TARGET"
 printf '  project=%s founder=%s (%s) domain=%s dev=%s reports=%s\n\n' \
   "$PROJECT" "$FOUNDER" "$FOUNDER_INITIAL" "$DOMAIN" "$DEV_URL" "$WEEKDAY"
 
-install_file STATUS.md           STATUS.md
-install_agents_md
-install_adapter adapters/CLAUDE.md CLAUDE.md
-install_adapter adapters/GEMINI.md GEMINI.md
-install_file FOUNDER.md          FOUNDER.md
-install_file DECISIONS.md        DECISIONS.md
-install_file ../docs/appendix/ceo-pack.md docs/appendix/ceo-pack.md
-install_file ../docs/appendix/overlays.md docs/appendix/overlays.md
-install_file plans-00-INDEX.md   docs/plans/00-INDEX.md
-install_file 02-program-plan.md  docs/plans/02-program-plan.md
-install_file 04-operating-model.md docs/plans/04-operating-model.md
-install_file briefs-README.md    docs/briefs/README.md
-install_file handoff-template.md docs/handoff/000-TEMPLATE.md
-install_file report-checklist.md docs/reports/README.md
-install_boot_prompts
+# A bounded declarative map is shared with the offline candidate exporter.
+# Preflight every destination before any write; never follow adopter links.
+while IFS='|' read -r source destination policy action; do
+  [ -n "$source" ] || continue
+  [[ "$source" != \#* ]] || continue
+  check_destination "$destination"
+done < "$KIT_DIR/managed-files.tsv"
+while IFS='|' read -r source destination policy action; do
+  [ -n "$source" ] || continue
+  [[ "$source" != \#* ]] || continue
+  case "$action" in
+    file) install_file "$source" "$destination" ;;
+    agents) install_agents_md ;;
+    adapter) install_adapter "$source" "$destination" ;;
+    *) die "invalid installation action" ;;
+  esac
+done < "$KIT_DIR/managed-files.tsv"
 
 # --- report -------------------------------------------------------------------
 report() { local title="$1"; shift; [ $# -gt 0 ] || return 0; printf '%s\n' "$title"; printf '  %s\n' "$@"; }
@@ -265,6 +232,8 @@ report "Skipped (existing):" ${SKIPPED[@]+"${SKIPPED[@]}"}
 report "Already up to date:" ${UNCHANGED[@]+"${UNCHANGED[@]}"}
 
 cat <<EOF
+
+Installation report only: skipped files are not verified current; no installed release is certified.
 
 Done. Next steps:
   1. cd $TARGET && git add -A && git commit -m "chore: TechOfficer workflow scaffold"

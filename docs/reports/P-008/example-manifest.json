@@ -1,0 +1,63 @@
+{
+  "contract": "2.2",
+  "files": [
+    {
+      "mode": "100644",
+      "path": "docs/appendix/ceo-pack.md",
+      "sha256": "f38f97edc1cca0339e40645e12add5d2e57ba37ab4f65f845ebd9b4fb682979d",
+      "sourcePath": "docs/appendix/ceo-pack.md",
+      "sourceSha256": "e47d9eaef2c12c65c69a8a34d3d13e88d7a647a191403f0b350e1dcd740ab9e6"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/appendix/overlays.md",
+      "sha256": "e0e061f2879661763fd1fdf8cad28544c4ea406bf064202deef17dbbe760c067",
+      "sourcePath": "docs/appendix/overlays.md",
+      "sourceSha256": "e0e061f2879661763fd1fdf8cad28544c4ea406bf064202deef17dbbe760c067"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/briefs/README.md",
+      "sha256": "0233d7b67f49a4ee61d3b1028a0325734db4852b6781e3fc697ebc8b2af29755",
+      "sourcePath": "templates/briefs-README.md",
+      "sourceSha256": "b751b30ffa3513f5ec856ebbd6ff81553e42be66c47b1155dd2dac4bedd13b56"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/handoff/000-TEMPLATE.md",
+      "sha256": "43bea39b7811da5032e337c528b5ad528eaa620b757635da8625c3779eb4e3d9",
+      "sourcePath": "templates/handoff-template.md",
+      "sourceSha256": "1556e839bff0a7603a6933397d117988c9d4d9a538e21e2404bed7c28106060b"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/reports/README.md",
+      "sha256": "3258c65fcc743f8004f9e7ed3cf6d101c3ebb13e83677dcaa0a5485befeaf4a8",
+      "sourcePath": "templates/report-checklist.md",
+      "sourceSha256": "016740ee841808821f21f5f89722b8459ffa3bed0edc1e54b68f510b9c60a1fa"
+    },
+    {
+      "mode": "100644",
+      "path": "docs/ops/boot-prompts.md",
+      "sha256": "c30a59cafa52977bd42c6772d99aa877ea9b255bd0df7a2f533c74b1fc351fc1",
+      "sourcePath": "templates/boot-prompts.md",
+      "sourceSha256": "c38d378dbcae110a8975a565e94a46e97c105ac46d3fb9c69d1a0b5dc7c5cec0"
+    }
+  ],
+  "schema": "techofficer.workflow-rendered/v1",
+  "source": {
+    "commit": "45d32689eec43daf3da72230f467ceb346aff740",
+    "releaseLabel": "candidate-P008",
+    "repository": "tech-officer/workflow"
+  },
+  "substitutions": {
+    "{DATE}": "2026-10-21",
+    "{DEV_URL}": "https://example.invalid",
+    "{DOMAIN}": "Software",
+    "{FOUNDER_INITIAL}": "F",
+    "{FOUNDER}": "Founder",
+    "{ISO-8601-WITH-TIMEZONE}": "2026-10-21T12:34:56Z",
+    "{PROJECT}": "Example",
+    "{WEEKDAY}": "Monday"
+  }
+}

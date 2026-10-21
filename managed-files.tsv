@@ -1,0 +1,16 @@
+# source|destination|ownership|installer action
+templates/STATUS.md|STATUS.md|protected|file
+templates/AGENTS-section.md|AGENTS.md|protected|agents
+templates/adapters/CLAUDE.md|CLAUDE.md|protected|adapter
+templates/adapters/GEMINI.md|GEMINI.md|protected|adapter
+templates/FOUNDER.md|FOUNDER.md|protected|file
+templates/DECISIONS.md|DECISIONS.md|protected|file
+docs/appendix/ceo-pack.md|docs/appendix/ceo-pack.md|managed|file
+docs/appendix/overlays.md|docs/appendix/overlays.md|managed|file
+templates/plans-00-INDEX.md|docs/plans/00-INDEX.md|protected|file
+templates/02-program-plan.md|docs/plans/02-program-plan.md|protected|file
+templates/04-operating-model.md|docs/plans/04-operating-model.md|protected|file
+templates/briefs-README.md|docs/briefs/README.md|managed|file
+templates/handoff-template.md|docs/handoff/000-TEMPLATE.md|managed|file
+templates/report-checklist.md|docs/reports/README.md|managed|file
+templates/boot-prompts.md|docs/ops/boot-prompts.md|managed|file

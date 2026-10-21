@@ -1,12 +1,12 @@
 ---
 project: techofficer-workflow
 phase: implementation
-updated: 2026-09-13T09:05:00Z
-lane: claude-1
-state: working
-current_task: "P-007 — Contract v2.2: docs/queue/ specified, readers accept both"
+updated: 2026-10-21T11:39:07.436036+00:00
+lane: executor-1
+state: review
+current_task: "P-008 PR7 built and CTO-approved; founder review/merge pending, no publication or rollout"
 blocker: null
-summary: "P-007 in review — Contract v2.2 specifies docs/queue/ (one file per item) and requires readers to accept both; producers unchanged, so every v2.1 repo stays valid untouched"
+summary: "Contract2.2 reader specification merged; P008 prepares reproducible release/export and migration evidence. No published upgrade or adopter rollout yet."
 milestones:
   - name: "M0 — bootstrap"
     done: 8
@@ -36,20 +36,7 @@ Brief 008; P-001 resolved by P-005.
 
 ## In progress
 
-- **P-007 — Contract v2.2: `docs/queue/` specified, readers accept both.**
-  Claimed 2026-09-13, lane `claude-1`, branch `brief/P-007`.
-  Cause, measured in a consuming repo: v2.1's *"removal wins, never union of
-  lines"* rule is correct but only tells a human how to resolve a conflict —
-  it cannot prevent one, and every pair of concurrent claims produces one.
-  `merge=union` was then tried on two real branches and **restored both
-  drained lines**, inverting the rule rather than implementing it
-  (`tech-officer/TechOfficer` B-432, 2026-09-11). Two branches deleting two
-  different paths merge silently; one file per queue item is the fix.
-  **Reader half only.** Producers keep writing the front-matter `queue`, so
-  no template, prompt, installer or example changed and every v2.1 repo is a
-  valid v2.2 repo untouched. Producers move in v2.3, gated on readers having
-  adopted v2.2 — shipping both at once would hand every console an empty
-  queue on day one.
+- **P-008 — Reproducible release candidate**: [PR7](https://github.com/tech-officer/workflow/pull/7), dedicated executor, `brief/P-008`, feature45d3268. Eight real installer/export tests + production B511 integration + readers36/40 PASS; CTO scoped approval recorded. Founder review/merge pending. No publication/adopter writes.
 
 ## Proposals
 
@@ -98,6 +85,27 @@ Brief 008; P-001 resolved by P-005.
   "(12 since PR #3 — rules 4/5 split, CI scar restored)".
 
 ## Activity log
+
+- 2026-10-21 — P008 delivered in PR7: deterministic candidate/manifest, shared mapping/boot template, protected records and actual installer parity. Eight focused tests, production B511 roundtrip/unknown-baseline integration, reader36+40, syntax/diff checks PASS; CTO independently approved45d3268. No newCI, release/tag, adopter or live-operation change. Full evidence docs/reports/P-008; successor handoff001.
+
+
+- 2026-10-21 — P008 claimed and drained before implementation; P007 merged in PR6 at cb4267d, removed from current work. Historical claim preserved below.
+
+- **P-007 — Contract v2.2: `docs/queue/` specified, readers accept both.**
+  Claimed 2026-09-13, lane `claude-1`, branch `brief/P-007`.
+  Cause, measured in a consuming repo: v2.1's *"removal wins, never union of
+  lines"* rule is correct but only tells a human how to resolve a conflict —
+  it cannot prevent one, and every pair of concurrent claims produces one.
+  `merge=union` was then tried on two real branches and **restored both
+  drained lines**, inverting the rule rather than implementing it
+  (`tech-officer/TechOfficer` B-432, 2026-09-11). Two branches deleting two
+  different paths merge silently; one file per queue item is the fix.
+  **Reader half only.** Producers keep writing the front-matter `queue`, so
+  no template, prompt, installer or example changed and every v2.1 repo is a
+  valid v2.2 repo untouched. Producers move in v2.3, gated on readers having
+  adopted v2.2 — shipping both at once would hand every console an empty
+  queue on day one.
+
 
 - 2026-08-27T12:40Z — Rule-13 prune: P-006 merged to main as PR #3 (merge
   commit `34580e9`, verified via `git log origin/main --oneline -1`). The
@@ -454,3 +462,8 @@ Brief 008; P-001 resolved by P-005.
 - 2026-07-31 — PR #1 merged to main by founder (observed in git history, merge commit `24f1126`). — C (executor session, kimi lane)
 - 2026-07-31 — Brief 001 claimed: mechanical port of `docs/seeds/source-kit/` into final structure with §4 de-coupling; acceptance = §4 checklist ticked with file:line. — C (executor session, kimi lane)
 - 2026-07-31 — Brief 001 delivered: source kit ported to plan §2 structure, §4 couplings resolved, PR opened; §4 checklist ticked with file:line in the PR body. Verified: `bash -n install.sh` clean, ported files diff vs seeds only at coupling lines, no Claude/claude.ai residue outside the appendix + adapters. State → review; founder merges. — C (executor session, kimi lane)
+
+
+## 2026-10-21 — Continuation and drift reconciliation
+
+P007 is merged in PR6 at cb4267d; historical in-progress narrative above is retained as history, not active work. Founder authorized Plan07 workflow rollout/continuation through TechOfficer. [P008](docs/briefs/P-008-reproducible-release-candidate.md) is ready for the existing executor, with no publication or adopter write authority. TechOfficer PR323 merged87e6d76, independently reviewed21October after merge; all five self-hosted checks passed, hosted3 remain billing-blocked. Preserve all TechOfficer operational/live gates. No new milestone completion claimed.

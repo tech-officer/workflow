@@ -89,3 +89,7 @@ Further reading: [WORKFLOW.md](WORKFLOW.md) (the method) ·
 (first hour) · [INTEGRATION.md](INTEGRATION.md) (the contract) ·
 [SCALING.md](SCALING.md) (what to drop when it's just you) ·
 [CONTRIBUTING.md](CONTRIBUTING.md) (how to help)
+
+## Reviewable upgrade candidates
+
+The optional [offline candidate exporter](docs/releases/upgrade-candidates.md) produces pinned rendered documentation, a B511-compatible managed-subset manifest, protected-file inventory and migration/rollback guidance. Ordinary Bash installation remains available without Python; `--render-time` makes its rendering reproducible. Candidates are not published releases or proof of historical installation. Existing records and custom instructions require explicit review. See [P008 evidence](docs/reports/P-008/README.md) and [current handoff](docs/handoff/001-release-candidate-preparation.md).

@@ -1,10 +1,10 @@
 ---
 project: techofficer-workflow
 phase: implementation
-updated: 2026-10-21T11:31:34.145286+00:00
+updated: 2026-10-21T11:39:07.436036+00:00
 lane: executor-1
-state: working
-current_task: "P-008 claimed: reproducible release candidate and migration evidence"
+state: review
+current_task: "P-008 PR7 built and CTO-approved; founder review/merge pending, no publication or rollout"
 blocker: null
 summary: "Contract2.2 reader specification merged; P008 prepares reproducible release/export and migration evidence. No published upgrade or adopter rollout yet."
 milestones:
@@ -36,7 +36,7 @@ Brief 008; P-001 resolved by P-005.
 
 ## In progress
 
-- **P-008 — Reproducible release candidate**: claimed by dedicated executor, branch `brief/P-008`. No publication/adopter writes.
+- **P-008 — Reproducible release candidate**: [PR7](https://github.com/tech-officer/workflow/pull/7), dedicated executor, `brief/P-008`, feature45d3268. Eight real installer/export tests + production B511 integration + readers36/40 PASS; CTO scoped approval recorded. Founder review/merge pending. No publication/adopter writes.
 
 ## Proposals
 
@@ -85,6 +85,9 @@ Brief 008; P-001 resolved by P-005.
   "(12 since PR #3 — rules 4/5 split, CI scar restored)".
 
 ## Activity log
+
+- 2026-10-21 — P008 delivered in PR7: deterministic candidate/manifest, shared mapping/boot template, protected records and actual installer parity. Eight focused tests, production B511 roundtrip/unknown-baseline integration, reader36+40, syntax/diff checks PASS; CTO independently approved45d3268. No newCI, release/tag, adopter or live-operation change. Full evidence docs/reports/P-008; successor handoff001.
+
 
 - 2026-10-21 — P008 claimed and drained before implementation; P007 merged in PR6 at cb4267d, removed from current work. Historical claim preserved below.
 

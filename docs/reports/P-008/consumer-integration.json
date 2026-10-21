@@ -1,0 +1,144 @@
+{
+  "result": "PASS",
+  "workflowWorkingSourceBase": "45d32689eec43daf3da72230f467ceb346aff740",
+  "syntheticSourceCommits": [
+    "e615add013bc2167d640b0fdd1b193b4f7080744",
+    "2a1d59dbbd663744f4173b7aa611c5e9820cad55"
+  ],
+  "syntheticAdopterCommit": "b30f85346d49bcc65d2294717484736aed45e374",
+  "consumerCommit": "fda62130d94799fb4afebc44dbcbbfc61b1a5143",
+  "consumerUnknownPlan": {
+    "schema": "techofficer.workflow-plan/v1",
+    "state": "manual review required",
+    "installedVersion": "unknown",
+    "adopterCommit": "fda62130d94799fb4afebc44dbcbbfc61b1a5143",
+    "baselineAdopterCommit": null,
+    "source": {
+      "repository": "tech-officer/workflow",
+      "commit": "2a1d59dbbd663744f4173b7aa611c5e9820cad55",
+      "releaseLabel": "synthetic-target"
+    },
+    "baselineSource": null,
+    "targetManifestSha256": "c00cd9da330136a45c6a127fe5bb293e6d355fc7ed1ddd6689f764cd3b059f38",
+    "baselineManifestSha256": null,
+    "releaseVerification": "declared label only; no release lookup",
+    "contract": "2.2",
+    "observedAt": "2026-10-21T12:34:56Z",
+    "decision": "pinned",
+    "files": [
+      {
+        "path": "docs/appendix/ceo-pack.md",
+        "classification": "unknown",
+        "reason": "No proven installed baseline; manual assessment required.",
+        "baselineProvenance": null,
+        "targetProvenance": {
+          "sourcePath": "docs/appendix/ceo-pack.md",
+          "sourceSha256": "e47d9eaef2c12c65c69a8a34d3d13e88d7a647a191403f0b350e1dcd740ab9e6"
+        },
+        "baseline": null,
+        "observed": null,
+        "target": {
+          "sha256": "e627f03b0ee5e8358fd26c712a8c9b6056b5d0272f3a0d17d849c3cd8a9b07c1",
+          "mode": "100644"
+        }
+      },
+      {
+        "path": "docs/appendix/overlays.md",
+        "classification": "unknown",
+        "reason": "No proven installed baseline; manual assessment required.",
+        "baselineProvenance": null,
+        "targetProvenance": {
+          "sourcePath": "docs/appendix/overlays.md",
+          "sourceSha256": "e0e061f2879661763fd1fdf8cad28544c4ea406bf064202deef17dbbe760c067"
+        },
+        "baseline": null,
+        "observed": null,
+        "target": {
+          "sha256": "e0e061f2879661763fd1fdf8cad28544c4ea406bf064202deef17dbbe760c067",
+          "mode": "100644"
+        }
+      },
+      {
+        "path": "docs/briefs/README.md",
+        "classification": "unknown",
+        "reason": "No proven installed baseline; manual assessment required.",
+        "baselineProvenance": null,
+        "targetProvenance": {
+          "sourcePath": "templates/briefs-README.md",
+          "sourceSha256": "b751b30ffa3513f5ec856ebbd6ff81553e42be66c47b1155dd2dac4bedd13b56"
+        },
+        "baseline": null,
+        "observed": {
+          "sha256": "f067fff80f2fefe349ee3a5e31afb3f62e02ad23628b145e887c90bf02305b89",
+          "mode": "100644"
+        },
+        "target": {
+          "sha256": "b645dd451bd58464f6e8a1e95969d3440f410827daea80419d45cbb371ecb672",
+          "mode": "100644"
+        }
+      },
+      {
+        "path": "docs/handoff/000-TEMPLATE.md",
+        "classification": "unknown",
+        "reason": "No proven installed baseline; manual assessment required.",
+        "baselineProvenance": null,
+        "targetProvenance": {
+          "sourcePath": "templates/handoff-template.md",
+          "sourceSha256": "1556e839bff0a7603a6933397d117988c9d4d9a538e21e2404bed7c28106060b"
+        },
+        "baseline": null,
+        "observed": {
+          "sha256": "0d3955b63aee5dada0610373124f5a7780f229f2ebbe33f4265d237ade7334f9",
+          "mode": "100644"
+        },
+        "target": {
+          "sha256": "f09ce6e57eb936bfe239759eb13bd65f23d317af3f2267c09ab9d234720f1c6a",
+          "mode": "100644"
+        }
+      },
+      {
+        "path": "docs/ops/boot-prompts.md",
+        "classification": "unknown",
+        "reason": "No proven installed baseline; manual assessment required.",
+        "baselineProvenance": null,
+        "targetProvenance": {
+          "sourcePath": "templates/boot-prompts.md",
+          "sourceSha256": "12479e7af3615cafd7ca4dac21d66a6503d03e35442708b010e2d0619a87bebc"
+        },
+        "baseline": null,
+        "observed": {
+          "sha256": "ecca5209a83a588818b8550cd118e909af7301cb75f70f56c1d03df306449bd1",
+          "mode": "100644"
+        },
+        "target": {
+          "sha256": "0d33bf8af24c78faf3fa81f6be6099292f72b14f9590c2bff52e7f1f7336d176",
+          "mode": "100644"
+        }
+      },
+      {
+        "path": "docs/reports/README.md",
+        "classification": "unknown",
+        "reason": "No proven installed baseline; manual assessment required.",
+        "baselineProvenance": null,
+        "targetProvenance": {
+          "sourcePath": "templates/report-checklist.md",
+          "sourceSha256": "016740ee841808821f21f5f89722b8459ffa3bed0edc1e54b68f510b9c60a1fa"
+        },
+        "baseline": null,
+        "observed": {
+          "sha256": "17d55f468dd9526c15c4d8bdafd6c3e059640c46a7b9d1295cd6e51c133b0e67",
+          "mode": "100644"
+        },
+        "target": {
+          "sha256": "20ff5ac66b156113d284509e1628621bdb57c3486af272f8883a03e92beab8ec",
+          "mode": "100644"
+        }
+      }
+    ],
+    "forwardSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "reverseSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compatibility": "Reader tests required; no producer migration or arbitrary discovered checks executed."
+  },
+  "roundtrip": "actual installer baseline, changed candidate, forward and reverse exact Git tree PASS",
+  "limitations": "Synthetic source commits are not upstream releases. Protected owner bytes unchanged; no historical version or live rollout certified."
+}

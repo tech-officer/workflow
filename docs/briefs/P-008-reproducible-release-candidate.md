@@ -1,6 +1,6 @@
 # P-008 — Reproducible workflow release candidate and migration evidence
 
-Status: Claimed by dedicated executor, 21 October 2026. Founder authorized Plan07 workflow rollout in TechOfficer and continuation today. Branch `brief/P-008`, isolated `/workspace/workflow-p008`, baseline main `cb4267da64b25ec4d996cbe308bfa5640f555b0b`. Existing executor `/root/b507_executor` implements; CTO independently reviews; founder merges. One substantial kit PR. No release publication or adopter write in this brief.
+Status: Built in PR7; CTO scoped approval45d3268 recorded, founder review/merge pending, 21 October 2026. Founder authorized Plan07 workflow rollout in TechOfficer and continuation today. Branch `brief/P-008`, isolated `/workspace/workflow-p008`, baseline main `cb4267da64b25ec4d996cbe308bfa5640f555b0b`. Existing executor `/root/b507_executor` implements; CTO independently reviews; founder merges. One substantial kit PR. No release publication or adopter write in this brief.
 
 ## Outcome
 
@@ -37,12 +37,12 @@ No GitHub release/tag, default-branch write, rollout to other adopters, auto-upg
 
 ## Acceptance and verification
 
-- [ ] Actual export works from pinned Git source; B511 accepts its manifest and verifies hashes. Dirty source does not alter pinned output. Candidate state/release provenance truthful.
-- [ ] Actual installer/export byte+mode parity, deterministic inputs and boot prompts; no duplicated renderer test that merely agrees with itself.
-- [ ] Existing custom records/adapters/AGENTS preserved, protocol append once, reruns do not certify skipped files as current.
-- [ ] Traversal, links, nested roots, collisions, malformed/oversized input, unknown refs, nonempty output and ambiguous token cases refuse safely without outside writes.
-- [ ] Disposable candidate forward/reverse exact tree evidence; real TechOfficer read-only unknown-baseline report and production queue readers remain compatible. No2.3 producer migration.
-- [ ] Documentation includes candidate changelog, compatibility, migration, pins/defer, custom conflicts, rollback, publication/adopter steps and exact commands; no release or live acceptance claimed.
-- [ ] STATUS reconciled/claimed before first implementation commit; README/brief/handoff and dated activity updated. One PR, explicit CTO review, founder merge.
+- [x] Actual export works from pinned Git source; B511 accepts its manifest and verifies hashes. Dirty source does not alter pinned output. Candidate state/release provenance truthful.
+- [x] Actual installer/export byte+mode parity, deterministic inputs and boot prompts; no duplicated renderer test that merely agrees with itself.
+- [x] Existing custom records/adapters/AGENTS preserved, protocol append once, reruns do not certify skipped files as current.
+- [x] Traversal, links, nested roots, collisions, malformed/oversized input, unknown refs, nonempty output and ambiguous token cases refuse safely without outside writes.
+- [x] Disposable candidate forward/reverse exact tree evidence; real TechOfficer read-only unknown-baseline report and production queue readers remain compatible. No2.3 producer migration.
+- [x] Documentation includes candidate changelog, compatibility, migration, pins/defer, custom conflicts, rollback, publication/adopter steps and exact commands; no release or live acceptance claimed.
+- [x] STATUS reconciled/claimed before first implementation commit; README/brief/handoff and dated activity updated. One PR, explicit CTO review, founder merge.
 
 Run `bash -n install.sh`, new stdlib suite (document exact command), real installer disposable matrix, and explicit B511 integration command using `/workspace/TechOfficer-b511`. Run consumer readers `npx tsx tools/b434/queue-form-test.ts` and `npx tsx tools/b398/degrading-parse-test.ts` from that consumer checkout if contract fixtures changed. `git diff --check`. No full Next/browser regression needed for kit-only changes; don't weaken checks. Keep source/evidence changes batched and open a meaningful draft PR early. Report blockers immediately with smallest phone-friendly action.

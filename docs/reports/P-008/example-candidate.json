@@ -1,0 +1,67 @@
+{
+  "candidateLabel": "candidate-P008",
+  "compatibility": "Contract2.2; queue producers unchanged; historical adopter baseline remains unknown.",
+  "managedSubsetCount": 6,
+  "manifestSha256": "1bfa144e3d5fa85140f63340adb17d2854b19cb71afba8e3490d509fa218c2d3",
+  "mappingSha256": "c60ff360f17689b5b25474c3a9064e9a733ca137e02cbe3d4adfd5beca55d8d7",
+  "protected": [
+    {
+      "path": "STATUS.md",
+      "reason": "Owner state, custom plans, adapters or combined instructions; no automatic upgrade ownership.",
+      "sourcePath": "templates/STATUS.md",
+      "sourceSha256": "c1102539080d386e47f2086c4af627978c9ac518ae9ab906c575ec68b287fbcc"
+    },
+    {
+      "path": "AGENTS.md",
+      "reason": "Owner state, custom plans, adapters or combined instructions; no automatic upgrade ownership.",
+      "sourcePath": "templates/AGENTS-section.md",
+      "sourceSha256": "d6f780329541e56cb5f869cc55b5a40633738d2ba37790e6b2d96a86f9d6bc55"
+    },
+    {
+      "path": "CLAUDE.md",
+      "reason": "Owner state, custom plans, adapters or combined instructions; no automatic upgrade ownership.",
+      "sourcePath": "templates/adapters/CLAUDE.md",
+      "sourceSha256": "87eae80fa9b4b1c07466f389320ec3b07104a78d2dc9ab1cea8fa51b21a4800f"
+    },
+    {
+      "path": "GEMINI.md",
+      "reason": "Owner state, custom plans, adapters or combined instructions; no automatic upgrade ownership.",
+      "sourcePath": "templates/adapters/GEMINI.md",
+      "sourceSha256": "1c3b94bb6d771286a11beb62521fdc06de47aeccdf06b65c91d468cb3e39b727"
+    },
+    {
+      "path": "FOUNDER.md",
+      "reason": "Owner state, custom plans, adapters or combined instructions; no automatic upgrade ownership.",
+      "sourcePath": "templates/FOUNDER.md",
+      "sourceSha256": "a59b9bca6036757ff04bb47135b522be1c14b4598d7a6ea42a475fb5f26deea4"
+    },
+    {
+      "path": "DECISIONS.md",
+      "reason": "Owner state, custom plans, adapters or combined instructions; no automatic upgrade ownership.",
+      "sourcePath": "templates/DECISIONS.md",
+      "sourceSha256": "9291e0754748a2e449023e21b787bf760cb4866a6bab9540a578e1a782780745"
+    },
+    {
+      "path": "docs/plans/00-INDEX.md",
+      "reason": "Owner state, custom plans, adapters or combined instructions; no automatic upgrade ownership.",
+      "sourcePath": "templates/plans-00-INDEX.md",
+      "sourceSha256": "7691faaa20a8f89d2c8f9309dd7e99ac9013609de1b773f1683fb62a9b683524"
+    },
+    {
+      "path": "docs/plans/02-program-plan.md",
+      "reason": "Owner state, custom plans, adapters or combined instructions; no automatic upgrade ownership.",
+      "sourcePath": "templates/02-program-plan.md",
+      "sourceSha256": "a9c1d4885c0818621ea85a9aec48eba8bf6e8a5ebe9ab4baef3c8d60c8c39705"
+    },
+    {
+      "path": "docs/plans/04-operating-model.md",
+      "reason": "Owner state, custom plans, adapters or combined instructions; no automatic upgrade ownership.",
+      "sourcePath": "templates/04-operating-model.md",
+      "sourceSha256": "edea712a6daa554386d28a05c419e12e8868b416620f68bac4953fe48dc0b1ab"
+    }
+  ],
+  "renderTime": "2026-10-21T12:34:56Z",
+  "schema": "techofficer.workflow-candidate/v1",
+  "sourceCommit": "45d32689eec43daf3da72230f467ceb346aff740",
+  "state": "exported candidate; not published or installed"
+}
